@@ -1,0 +1,61 @@
+
+classDiagram
+    class Income {
+        +datetime date
+        +str source
+        +int amount
+        +__post_init__()
+    }
+
+    class IncomeApp {
+        -list~Income~ incomes
+        -Tk root
+        +__init__(incomes)
+        +create_table()
+        +create_buttons()
+        +update_table()
+        +add_income()
+        +delete_income()
+        +run_commands()
+        +run()
+    }
+
+    class Parser {
+        <<module>>
+        +parse_income(text) Income
+        +income_to_string(income) str
+    }
+
+    class FileManager {
+        <<module>>
+        +load_incomes(filename) list~Income~
+        +save_incomes(filename, incomes)
+    }
+
+    class CommandProcessor {
+        <<module>>
+        +execute_command(command, incomes) str
+    }
+
+    class LoggerConfig {
+        <<module>>
+        +configure_logger()
+    }
+
+    class Main {
+        <<module>>
+        +main()
+    }
+
+    IncomeApp "1"   -- "0..*" Income : хранит
+    IncomeApp ..> Parser : использует
+    IncomeApp ..> CommandProcessor : использует
+    Parser ..> Income : создаёт
+    FileManager ..> Income : загружает и сохраняет
+    FileManager ..> Parser : использует
+    CommandProcessor ..> Income : изменяет список
+    CommandProcessor ..> Parser : использует
+    CommandProcessor ..> FileManager : сохраняет
+    Main ..> IncomeApp : запускает
+    Main ..> FileManager : загружает данные
+    Main ..> LoggerConfig : настраивает журнал

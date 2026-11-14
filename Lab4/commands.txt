@@ -1,0 +1,3 @@
+ADD 2026.11.13;Стипендия;5000
+REM amount < 10000
+SAVE result.txt
